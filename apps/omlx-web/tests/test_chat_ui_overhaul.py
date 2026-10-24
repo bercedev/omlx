@@ -434,9 +434,11 @@ const pick = async (meta) => {
 
 
 def test_model_picker_button_stays_inside_its_shrinking_menu():
-    # The picker's menu is a shrinkable flex item. A fixed 15rem cap let the button
-    # overflow it and draw under the reasoning pill (#4794); capping it at 100% keeps
-    # it inside, so the model name truncates instead.
+    # The picker's menu is a shrinkable flex item. A 15rem cap on the button let it
+    # overflow the menu and draw under the reasoning pill (#4794). The cap belongs on
+    # the menu: the button then fills it, so a long name truncates when the toolbar is
+    # narrow and the menu stays 15rem wide (no gap before the next pill) when it isn't.
     picker = _section(_template(), "<!-- Model picker -->", "<!-- Reasoning level -->")
-    assert "max-width: min(15rem, 100%)" in picker
+    assert 'class="composer-menu min-w-0" style="max-width: 15rem;"' in picker
+    assert 'style="max-width: 100%;"' in picker
     assert 'class="truncate min-w-0"' in picker
